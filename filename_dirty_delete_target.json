@@ -1,3 +1,14 @@
-[
-  
-]
+{
+  "replaces": [
+
+  ],
+  "re_sub": [
+    "[【\[][\w\s]*(\.\w*)*((\.com)|(\.net)|(\.cn))[\w\s]*[】\]]"
+  ],
+  "refuse_suffix": [
+    "py", "json", "md"
+  ],
+  "refuse_dir": [
+    ".git", ".idea"
+  ]
+}
