@@ -68,7 +68,7 @@ def rename_files_in_dir(path, config, only_print=False):
             new_name = name
             new_name = delete_replace_str(new_name, replaces)
             new_name = delete_re_str(new_name, re_sub)
-            new_name = new_name.strip(". -")
+            new_name = new_name.strip("@#. -")
             new_dirs.append(name)
 
             print("rename dir '{}' to '{}' in '{}'".format(name, new_name, root))
@@ -93,7 +93,7 @@ def rename_files_in_dir(path, config, only_print=False):
             new_name = name
             new_name = delete_replace_str(new_name, replaces)
             new_name = delete_re_str(new_name, re_sub)
-            new_name = new_name.strip(". -")
+            new_name = new_name.strip("#@. -")
 
             print("rename file '{}' to '{}' in '{}'".format(
                 "{}.{}".format(name, suffix),
@@ -103,6 +103,7 @@ def rename_files_in_dir(path, config, only_print=False):
                 if not only_print:
                     os.rename(os.path.join(root, "{}.{}".format(name, suffix)),
                               os.path.join(root, "{}.{}".format(new_name, suffix)))
+                    # todo move change name after print and wait for input
 
 
 def load_config(file_name):
