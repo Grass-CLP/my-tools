@@ -4,6 +4,7 @@
 # created by Lipson on 2018/10/22.
 # email to LipsonChan@yahoo.com
 #
+import codecs
 import json
 import os
 import re
@@ -103,13 +104,12 @@ def rename_files_in_dir(path, config, only_print=False):
 
 def load_config(file_name):
     try:
-        f = open(file_name, 'r')
-        string = f.read()
-        print(string)
-        config = json.loads(string)
-        f.close()
-
-        return config
+        with codecs.open(file_name, 'r', 'utf-8') as f:
+            string = f.read()
+            print(string)
+            config = json.loads(string)
+            print(config['re_sub'][0])
+            return config
     except IOError or ValueError:
         return dict()
 
