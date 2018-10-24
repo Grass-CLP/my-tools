@@ -22,7 +22,7 @@ def utf8_data_to_file(f, data):
 
 def delete_re_str(filename, res):
     for re_str in res:
-        filename = re.sub(re_str, '', filename)
+        filename = re.sub(re_str, '', filename, flags=re.I | re.U)
 
     return filename
 
@@ -68,6 +68,7 @@ def rename_files_in_dir(path, config, only_print=False):
             new_name = name
             new_name = delete_replace_str(new_name, replaces)
             new_name = delete_re_str(new_name, re_sub)
+            new_name = new_name.strip(". -")
             new_dirs.append(name)
 
             print("rename dir '{}' to '{}' in '{}'".format(name, new_name, root))
@@ -77,7 +78,7 @@ def rename_files_in_dir(path, config, only_print=False):
                               os.path.join(root, new_name))
 
             pass
-        dirs = dirs # type: list[str]
+        dirs = dirs  # type: list[str]
         dirs.clear()
         dirs.extend(new_dirs)
 
@@ -89,8 +90,10 @@ def rename_files_in_dir(path, config, only_print=False):
             if suffix in refuse_suffix:
                 continue
 
-            new_name = delete_replace_str(name, replaces)
-            new_name = delete_re_str(name, re_sub)
+            new_name = name
+            new_name = delete_replace_str(new_name, replaces)
+            new_name = delete_re_str(new_name, re_sub)
+            new_name = new_name.strip(". -")
 
             print("rename file '{}' to '{}' in '{}'".format(
                 "{}.{}".format(name, suffix),
@@ -107,8 +110,7 @@ def load_config(file_name):
         with codecs.open(file_name, 'r', 'utf-8') as f:
             string = f.read()
             print(string)
-            config = json.loads(string)
-            print(config['re_sub'][0])
+            config = json.loads(string, encoding='utf-8')
             return config
     except IOError or ValueError:
         return dict()
@@ -118,7 +120,7 @@ def main():
     path = os.path.dirname(os.path.realpath(__file__))
     config_file_name = os.path.join(path, "filename_dirty_delete_target.json")
     config = load_config(config_file_name)
-    rename_files_in_dir(path, config, True)
+    rename_files_in_dir(path, config, False)
     # rename_files_in_dir(path, config, False)
 
     sleep(2)
